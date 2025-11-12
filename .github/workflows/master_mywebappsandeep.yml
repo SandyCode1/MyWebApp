@@ -3,7 +3,8 @@ name: Build and Deploy MyWebApp
 on:
   push:
     branches:
-      - main
+      - master
+  workflow_dispatch:  # Optional: manual trigger
 
 jobs:
   build-and-deploy:
@@ -19,12 +20,15 @@ jobs:
 
       - name: Restore Dependencies
         run: dotnet restore
+        working-directory: ./MyWebApp
 
       - name: Build
         run: dotnet build --configuration Release
+        working-directory: ./MyWebApp
 
       - name: Publish
         run: dotnet publish -c Release -o publish
+        working-directory: ./MyWebApp
 
       - name: Deploy to Azure
         uses: azure/webapps-deploy@v3
@@ -32,4 +36,4 @@ jobs:
           app-name: MyWebAppSandeep
           slot-name: Production
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ./publish  # <-- this must match your 'dotnet publish -o' folder
+          package: ./MyWebApp/publish
