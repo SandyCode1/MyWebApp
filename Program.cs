@@ -19,8 +19,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
-app.MapRazorPages()
-   .WithStaticAssets();
+app.UseStaticFiles();       // Serves all static files (CSS, JS, images, etc.)
+app.MapRazorPages();
 
 app.Run();
