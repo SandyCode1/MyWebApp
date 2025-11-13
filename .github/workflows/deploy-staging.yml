@@ -1,14 +1,15 @@
-name: Build and Deploy MyWebApp
+name: Deploy to Azure - Staging
 
 on:
   push:
     branches:
-      - master
-  workflow_dispatch:  # optional: manual trigger
+      - staging        # <-- Triggers only when you push to 'staging' branch
+  workflow_dispatch:    # Optional: allows manual trigger
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -32,9 +33,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy to Azure
+      - name: Deploy to Azure Staging Slot
         uses: azure/webapps-deploy@v3
         with:
-          app-name: MyWebAppSandeep
-          slot-name: Production
+          app-name: MyWebAppSandeep        # Your App Service name
+          slot-name: staging               # The slot name you created
           package: ./publish
